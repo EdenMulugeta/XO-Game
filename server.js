@@ -7,7 +7,7 @@ const io = new Server(server);
 app.use(express.static(`${__dirname}`));
 
 app.get("/", (req, res) => {
-  console.log(req);
+  // console.log(req);
   res.send("<h1>Hello world</h1>");
 });
 
@@ -18,8 +18,9 @@ io.on("connection", (socket) => {
     io.emit("game", type);
   });
   io.on("connection", (socket) => {
-    socket.on("xogame", (box) => {
-      io.emit("xogame", box);
+    socket.on("xogame", (type) => {
+      io.emit("xogame", type);
+      console.log(type);
     });
   });
   socket.on("disconnect", () => {
