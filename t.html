@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .container {
+        display: grid;
+        grid-template-columns: auto auto 1fr;
+        padding-left: 35%;
+        padding-top: 5%;
+      }
+      .contain p {
+        font-size: 5rem;
+        font-weight: 700;
+      }
+      .contain {
+        border: 2px solid black;
+        width: 5rem;
+        height: 5rem;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+      }
+      .one,
+      .two,
+      .three {
+        border-top: none;
+      }
+      .one,
+      .four,
+      .seven {
+        border-left: none;
+      }
+      .seven,
+      .eight,
+      .nine {
+        border-bottom: none;
+      }
+      .three,
+      .six,
+      .nine {
+        border-right: none;
+      }
+    </style>
+    <div class="container">
+      <div class="contain one"></div>
+      <div class="contain two"></div>
+      <div class="contain three"></div>
+      <div class="contain four"></div>
+      <div class="contain five"></div>
+      <div class="contain six"></div>
+      <div class="contain seven"></div>
+      <div class="contain eight"></div>
+      <div class="contain nine"></div>
+    </div>
+    <div class="append"></div>
+    <button id="me">press me</button>
+
+    <script type="application/javascript" src="./index2.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const append2 = document.querySelector(".append");
+      var socket = io();
+      document.getElementById("me").addEventListener("click", () => {
+        socket.emit("game", "x");
+      });
+      socket.on("game", (type) => {
+        var type2 = document.createElement("p");
+        type2.textContent = type;
+        append2.appendChild(type2);
+        console.log(type);
+      });
+      socket.on("xogame", (box) => {
+        console.log(box);
+      });
+    </script>
+  </body>
+</html>
