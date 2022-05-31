@@ -1,7 +1,9 @@
-window.addEventListener("DOMContentLoaded", () => {
-  const boxes = document.querySelectorAll(".contain");
-  //console.log(boxes);
 
+
+window.addEventListener("DOMContentLoaded", () => {
+
+  const boxes = document.querySelectorAll(".contain");
+  var socket = io();
   class Player {
     constructor(type) {
       this.clicked = [];
@@ -16,165 +18,179 @@ window.addEventListener("DOMContentLoaded", () => {
       this.clicked.push(box);
     }
   }
+  var playerData = {
+    p1: new Player("X"),
+    p2: new Player("O")
+  }
 
-  const p1 = new Player("X");
-  const p2 = new Player("O");
+
+  socket.on("xogame", (data) => {
+
+    boxes.forEach(box => {
+      let box2 = box.className.split(" ")[1]
+      if (box2 === data.el && box.childNodes.length === 0) {
+        checkBoxes(playerData, box)
+      }
+    })
+  });
+
+  const checkBoxes = (type, box) => {
+    if (type.p1.turn === true) {
+      type.p1.click(box.className.split(" ")[1]);
+      socket.emit("xogame", type.p1);
+
+      const p = document.createElement("p");
+      p.textContent = type.p1.type;
+      box.style.pointerEvents = "none";
+      box.appendChild(p);
+
+      if (
+        type.p1.clicked.includes("one") &&
+        type.p1.clicked.includes("two") &&
+        type.p1.clicked.includes("three")
+      ) {
+        alert("player 1 won");
+        location.reload();
+      } else if (
+        type.p1.clicked.includes("one") &&
+        type.p1.clicked.includes("four") &&
+        type.p1.clicked.includes("seven")
+      ) {
+        alert("player 1 won");
+        location.reload();
+      } else if (
+        type.p1.clicked.includes("one") &&
+        type.p1.clicked.includes("five") &&
+        type.p1.clicked.includes("nine")
+      ) {
+        alert("player 1 won");
+        location.reload();
+      } else if (
+        type.p1.clicked.includes("two") &&
+        type.p1.clicked.includes("five") &&
+        type.p1.clicked.includes("eight")
+      ) {
+        alert("player 1 won");
+        location.reload();
+      } else if (
+        type.p1.clicked.includes("three") &&
+        type.p1.clicked.includes("five") &&
+        type.p1.clicked.includes("seven")
+      ) {
+        alert("player 1 won");
+        location.reload();
+      } else if (
+        type.p1.clicked.includes("three") &&
+        type.p1.clicked.includes("five") &&
+        type.p1.clicked.includes("seven")
+      ) {
+        alert("player 1 won");
+        location.reload();
+      } else if (
+        type.p1.clicked.includes("three") &&
+        type.p1.clicked.includes("six") &&
+        type.p1.clicked.includes("nine")
+      ) {
+        alert("player 1 won");
+        location.reload();
+      } else if (
+        type.p1.clicked.includes("four") &&
+        type.p1.clicked.includes("five") &&
+        type.p1.clicked.includes("six")
+      ) {
+        alert("player 1 won");
+        location.reload();
+      } else if (
+        type.p1.clicked.includes("seven") &&
+        type.p1.clicked.includes("eight") &&
+        type.p1.clicked.includes("nine")
+      ) {
+        alert("player 1 won");
+        location.reload();
+      }
+
+      type.p1.turn = false;
+      type.p2.turn = true;
+    } else {
+      type.p2.click(box.className.split(" ")[1]);
+      const p = document.createElement("p");
+      p.textContent = type.p2.type;
+      box.style.pointerEvents = "none";
+      box.appendChild(p);
+      if (
+        type.p2.clicked.includes("one") &&
+        type.p2.clicked.includes("two") &&
+        type.p2.clicked.includes("three")
+      ) {
+        alert("player 2 won");
+        location.reload();
+      } else if (
+        type.p2.clicked.includes("one") &&
+        type.p2.clicked.includes("four") &&
+        type.p2.clicked.includes("seven")
+      ) {
+        alert("player 2 won");
+        location.reload();
+      } else if (
+        type.p2.clicked.includes("one") &&
+        type.p2.clicked.includes("five") &&
+        type.p2.clicked.includes("nine")
+      ) {
+        alert("player 2 won");
+        location.reload();
+      } else if (
+        type.p2.clicked.includes("two") &&
+        type.p2.clicked.includes("five") &&
+        type.p2.clicked.includes("eight")
+      ) {
+        alert("player 2 won");
+        location.reload();
+      } else if (
+        type.p2.clicked.includes("three") &&
+        type.p2.clicked.includes("five") &&
+        type.p2.clicked.includes("seven")
+      ) {
+        alert("player 2 won");
+        location.reload();
+      } else if (
+        type.p2.clicked.includes("three") &&
+        type.p2.clicked.includes("five") &&
+        type.p2.clicked.includes("seven")
+      ) {
+        alert("player 2 won");
+        location.reload();
+      } else if (
+        type.p2.clicked.includes("three") &&
+        type.p2.clicked.includes("six") &&
+        type.p2.clicked.includes("nine")
+      ) {
+        alert("player 2 won");
+        location.reload();
+      } else if (
+        type.p2.clicked.includes("four") &&
+        type.p2.clicked.includes("five") &&
+        type.p2.clicked.includes("six")
+      ) {
+        alert("player 2 won");
+        location.reload();
+      } else if (
+        type.p2.clicked.includes("seven") &&
+        type.p2.clicked.includes("eight") &&
+        type.p2.clicked.includes("nine")
+      ) {
+        alert("player 2 won");
+        location.reload();
+      }
+      type.p2.turn = false;
+      type.p1.turn = true;
+    }
+  }
+
 
   boxes.forEach((box) => {
     box.addEventListener("click", function () {
-      if (p1.turn === true) {
-        p1.click(box.className.split(" ")[1]);
-        console.log(p1);
-        socket.emit("xogame", p1);
-
-        const p = document.createElement("p");
-        p.textContent = p1.type;
-        box.style.pointerEvents = "none";
-        box.appendChild(p);
-        // p1.clicked.map((cell)=> {
-        if (
-          p1.clicked.includes("one") &&
-          p1.clicked.includes("two") &&
-          p1.clicked.includes("three")
-        ) {
-          alert("player 1 won");
-          location.reload();
-        } else if (
-          p1.clicked.includes("one") &&
-          p1.clicked.includes("four") &&
-          p1.clicked.includes("seven")
-        ) {
-          alert("player 1 won");
-          location.reload();
-        } else if (
-          p1.clicked.includes("one") &&
-          p1.clicked.includes("five") &&
-          p1.clicked.includes("nine")
-        ) {
-          alert("player 1 won");
-          location.reload();
-        } else if (
-          p1.clicked.includes("two") &&
-          p1.clicked.includes("five") &&
-          p1.clicked.includes("eight")
-        ) {
-          alert("player 1 won");
-          location.reload();
-        } else if (
-          p1.clicked.includes("three") &&
-          p1.clicked.includes("five") &&
-          p1.clicked.includes("seven")
-        ) {
-          alert("player 1 won");
-          location.reload();
-        } else if (
-          p1.clicked.includes("three") &&
-          p1.clicked.includes("five") &&
-          p1.clicked.includes("seven")
-        ) {
-          alert("player 1 won");
-          location.reload();
-        } else if (
-          p1.clicked.includes("three") &&
-          p1.clicked.includes("six") &&
-          p1.clicked.includes("nine")
-        ) {
-          alert("player 1 won");
-          location.reload();
-        } else if (
-          p1.clicked.includes("four") &&
-          p1.clicked.includes("five") &&
-          p1.clicked.includes("six")
-        ) {
-          alert("player 1 won");
-          location.reload();
-        } else if (
-          p1.clicked.includes("seven") &&
-          p1.clicked.includes("eight") &&
-          p1.clicked.includes("nine")
-        ) {
-          alert("player 1 won");
-          location.reload();
-        }
-
-        p1.turn = false;
-        p2.turn = true;
-      } else {
-        p2.click(box.className.split(" ")[1]);
-        const p = document.createElement("p");
-        p.textContent = p2.type;
-        box.style.pointerEvents = "none";
-        box.appendChild(p);
-        // p2.clicked.map((cell)=>{
-
-        if (
-          p2.clicked.includes("one") &&
-          p2.clicked.includes("two") &&
-          p2.clicked.includes("three")
-        ) {
-          alert("player 2 won");
-          location.reload();
-        } else if (
-          p2.clicked.includes("one") &&
-          p2.clicked.includes("four") &&
-          p2.clicked.includes("seven")
-        ) {
-          alert("player 2 won");
-          location.reload();
-        } else if (
-          p2.clicked.includes("one") &&
-          p2.clicked.includes("five") &&
-          p2.clicked.includes("nine")
-        ) {
-          alert("player 2 won");
-          location.reload();
-        } else if (
-          p2.clicked.includes("two") &&
-          p2.clicked.includes("five") &&
-          p2.clicked.includes("eight")
-        ) {
-          alert("player 2 won");
-          location.reload();
-        } else if (
-          p2.clicked.includes("three") &&
-          p2.clicked.includes("five") &&
-          p2.clicked.includes("seven")
-        ) {
-          alert("player 2 won");
-          location.reload();
-        } else if (
-          p2.clicked.includes("three") &&
-          p2.clicked.includes("five") &&
-          p2.clicked.includes("seven")
-        ) {
-          alert("player 2 won");
-          location.reload();
-        } else if (
-          p2.clicked.includes("three") &&
-          p2.clicked.includes("six") &&
-          p2.clicked.includes("nine")
-        ) {
-          alert("player 2 won");
-          location.reload();
-        } else if (
-          p2.clicked.includes("four") &&
-          p2.clicked.includes("five") &&
-          p2.clicked.includes("six")
-        ) {
-          alert("player 2 won");
-          location.reload();
-        } else if (
-          p2.clicked.includes("seven") &&
-          p2.clicked.includes("eight") &&
-          p2.clicked.includes("nine")
-        ) {
-          alert("player 2 won");
-          location.reload();
-        }
-
-        p2.turn = false;
-        p1.turn = true;
-      }
+      socket.emit("xogame", { type: playerData, el: box.className.split(" ")[1] });
+      checkBoxes(playerData, box)
     });
   });
 

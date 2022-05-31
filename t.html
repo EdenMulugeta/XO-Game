@@ -67,23 +67,28 @@
     <div class="append"></div>
     <button id="me">press me</button>
 
-    <script type="application/javascript" src="./index2.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
+    <script type="module" src="./index2.js"></script>
+    <script
+      defer
+      type="application/javascript"
+      src="/socket.io/socket.io.js"
+    ></script>
+
     <script>
-      const append2 = document.querySelector(".append");
-      var socket = io();
-      document.getElementById("me").addEventListener("click", () => {
-        socket.emit("game", "x");
-      });
-      socket.on("game", (type) => {
-        var type2 = document.createElement("p");
-        type2.textContent = type;
-        append2.appendChild(type2);
-        console.log(type);
-      });
-      socket.on("xogame", (box) => {
-        console.log(box);
-      });
+      // const append2 = document.querySelector(".append");
+      // var socket = io();
+      // document.getElementById("me").addEventListener("click", () => {});
+      // // socket.on("game", (type) => {
+      // //   var type2 = document.createElement("p");
+      // //   type2.textContent = type;
+      // //   append2.appendChild(type2);
+      // //   console.log(type);
+      // // });
+      // socket.emit("xogame", playerData);
+
+      // socket.on("xogame", (playerData) => {
+      //   console.log(playerData);
+      // });
     </script>
   </body>
 </html>
